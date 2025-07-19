@@ -18,7 +18,7 @@ UPLOAD_FOLDER = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-MAIN_WEB_URL = 'http://127.0.0.1:5000'
+MAIN_WEB_URL = 'https://shop-bee-m82g.onrender.com'
 MAIN_WEB_UPLOAD_API = f"{MAIN_WEB_URL}/api/upload_product_image"
 MAIN_WEB_UPLOAD_AVATAR_API = f"{MAIN_WEB_URL}/api/upload_shop_avatar"
 MAIN_WEB_UPDATE_SHOP_INFO_API = f"{MAIN_WEB_URL}/api/update_shop_info"
