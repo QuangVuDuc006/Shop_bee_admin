@@ -8,6 +8,12 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = 'admin_super_secret_key'
 
+@app.route("/api/products")
+def get_products():
+    with open("products.json", "r", encoding="utf-8") as f:
+        products = json.load(f)
+    return jsonify(products)
+
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
