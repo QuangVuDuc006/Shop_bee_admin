@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="sidebar">
+            <h2>Shop Bee Admin</h2>
+            <img src="{{ url_for('static', filename='images/admin_logo.png') }}" alt="Admin Logo" class="admin-logo">
+            <div class="admin-user-info">
+                {% if admin_user %}
+                    <p>Xin chào, <strong>{{ admin_user }}</strong></p>
+                    <a href="{{ url_for('logout_admin') }}" class="logout-btn">Đăng xuất</a>
+                {% else %}
+                    <p>Bạn chưa đăng nhập</p>
+                    <a href="{{ url_for('login_admin') }}" class="login-btn">Đăng nhập</a>
+                {% endif %}
+            </div>
+            <ul>
+                <li><a href="{{ url_for('admin_home') }}">Trang chủ Admin</a></li>
+                <li><a href="{{ url_for('manage_products') }}">Quản lý sản phẩm</a></li>
+                <li><a href="{{ url_for('add_product') }}">Thêm sản phẩm mới</a></li>
+                <li><a href="{{ url_for('manage_shop_info') }}">Quản lý thông tin web</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes-container">
+                        {% for category, message in messages %}
+                            <li class="flash-message {{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="info-card" style="margin-bottom: 30px;">
+                <div class="info-header">
+                    <img src="{{ MAIN_WEB_URL }}/static/shop_assets/{{ shop_info.shop_avatar }}" alt="Shop Avatar" class="avatar-display">
+                    <div class="shop-title">
+                        <h2>{{ shop_info.shop_name }}</h2>
+                        <p>Hotline: {{ shop_info.hotline }} | Email: {{ shop_info.email }}</p>
+                    </div>
+                    <div class="info-actions" style="margin-top: 0; margin-left: auto;">
+                         <a href="{{ url_for('manage_shop_info') }}" class="edit-info-btn" style="padding: 10px 20px; font-size: 14px;">Quản lý</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-list-container">
+                <div class="product-list-header">
+                    <h2>Sản phẩm của bạn</h2>
+                    <a href="{{ url_for('add_product') }}" class="add-product-btn">＋ Thêm sản phẩm</a>
+                </div>
+
+                {% if products %}
+                <div class="table-wrapper">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <img src="{{ MAIN_WEB_URL }}/static/images/{{ product.image if product.image else 'default.jpg' }}" alt="{{ product.name }}" class="product-thumbnail">
+                                </td>
+                                <td>{{ product.name }}</td>
+                                <td>
+                                    {% if product.variants and product.variants[0] %}
+                                        {{ "{:,.0f}".format(product.variants[0].price) }} VNĐ
+                                    {% else %}
+                                        Chưa có giá
+                                    {% endif %}
+                                </td>
+                                <td class="description-cell">{{ product.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-products">
+                    <p>Bạn chưa có sản phẩm nào.</p>
+                    <a href="{{ url_for('add_product') }}">Bấm vào đây để thêm sản phẩm đầu tiên!</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(20px)';
+                    msg.addEventListener('transitionend', () => msg.remove());
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

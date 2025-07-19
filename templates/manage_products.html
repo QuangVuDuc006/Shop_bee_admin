@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý sản phẩm - Admin Site</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="sidebar">
+            <h2>Shop Bee Admin</h2>
+            <img src="{{ url_for('static', filename='images/admin_logo.png') }}" alt="Admin Logo" class="admin-logo">
+            <div class="admin-user-info">
+                {% if admin_user %}
+                    <p>Xin chào, <strong>{{ admin_user }}</strong></p>
+                    <a href="{{ url_for('logout_admin') }}" class="logout-btn">Đăng xuất</a>
+                {% endif %}
+            </div>
+            <ul>
+                <li><a href="{{ url_for('admin_home') }}">Trang chủ Admin</a></li>
+                <li><a href="{{ url_for('manage_products') }}">Quản lý sản phẩm</a></li>
+                <li><a href="{{ url_for('add_product') }}">Thêm sản phẩm mới</a></li>
+                <li><a href="{{ url_for('manage_shop_info') }}">Quản lý thông tin web</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes-container">
+                        {% for category, message in messages %}
+                            <li class="flash-message {{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="product-list-container">
+                <div class="product-list-header">
+                    <h2>Quản lý sản phẩm</h2>
+                    <a href="{{ url_for('add_product') }}" class="add-product-btn">＋ Thêm sản phẩm</a>
+                </div>
+
+                {% if products %}
+                <div class="table-wrapper">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Mô tả</th>
+                                <th style="width: 15%; text-align: center;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <img src="{{ MAIN_WEB_URL }}/static/images/{{ product.image if product.image else 'default.jpg' }}" alt="{{ product.name }}" class="product-thumbnail">
+                                </td>
+                                <td>{{ product.name }}</td>
+                                <td>
+                                    {% if product.variants %}
+                                        {{ "{:,.0f}".format(product.variants[0].price) }} VNĐ
+                                    {% else %}
+                                        Chưa có giá
+                                    {% endif %}
+                                </td>
+                                <td class="description-cell">{{ product.description }}</td>
+                                <td class="actions-cell">
+                                    <a href="{{ url_for('edit_product', product_id=product.id) }}" class="action-btn edit">Sửa</a>
+                                    <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                        <button type="submit" class="action-btn delete">Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-products">
+                    <p>Bạn chưa có sản phẩm nào.</p>
+                    <a href="{{ url_for('add_product') }}">Bấm vào đây để thêm sản phẩm đầu tiên!</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        // Script cho flash messages tự biến mất
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.flash-message').forEach(msg => {
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    setTimeout(() => msg.remove(), 500);
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

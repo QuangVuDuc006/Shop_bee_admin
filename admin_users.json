@@ -1,0 +1,30 @@
+{
+  "quang": {
+    "password_hash": "pbkdf2:sha256:600000$K0Z1urrxssEcti4Y$c5b867eadea84accc58f7e17b8eeffbe56cf186f5d25e6ace8cba166adbbb4c7",
+    "shop_info": {
+      "shop_name": "Samsung",
+      "hotline": "dsadsasd",
+      "email": "samsung@gmail.com",
+      "address": "Korea",
+      "facebook_link": "https://www.facebook.com/SamsungVietnam",
+      "zalo_link": "https://www.facebook.com/SamsungVietnam",
+      "website_link": "https://www.facebook.com/SamsungVietnam",
+      "shop_avatar": "samsung-galaxy-z-fold-6-xanh_1_.png",
+      "info_set": true
+    }
+  },
+  "bin": {
+    "password_hash": "pbkdf2:sha256:600000$zBPQMZcaxFoCdvc8$2ae5b6fc4fa6d85e4781d771e5c1ab145709914f7e50dfd77dacc0772176d0c2",
+    "shop_info": {
+      "shop_name": "Roll Royce Shop",
+      "hotline": "dsadsasd",
+      "email": "samsung@gmail.com",
+      "address": "Korea",
+      "facebook_link": "https://www.facebook.com/SamsungVietnam",
+      "zalo_link": "https://www.facebook.com/SamsungVietnam",
+      "website_link": "https://www.facebook.com/SamsungVietnam",
+      "shop_avatar": "ghost1-e9c1.png",
+      "info_set": true
+    }
+  }
+}

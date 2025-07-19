@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý thông tin Web - Admin Site</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="sidebar">
+            <h2>Shop Bee Admin</h2>
+            <img src="{{ url_for('static', filename='images/admin_logo.png') }}" alt="Admin Logo" class="admin-logo">
+            <div class="admin-user-info">
+                {% if admin_user %}
+                    <p>Xin chào, <strong>{{ admin_user }}</strong></p>
+                    <a href="{{ url_for('logout_admin') }}" class="logout-btn">Đăng xuất</a>
+                {% else %}
+                    <p>Bạn chưa đăng nhập</p>
+                    <a href="{{ url_for('login_admin') }}" class="login-btn">Đăng nhập</a>
+                {% endif %}
+            </div>
+            <ul>
+                <li><a href="{{ url_for('admin_home') }}">Trang chủ Admin</a></li>
+                <li><a href="{{ url_for('manage_products') }}">Quản lý sản phẩm</a></li>
+                <li><a href="{{ url_for('add_product') }}">Thêm sản phẩm mới</a></li>
+                <li><a href="{{ url_for('manage_shop_info') }}">Quản lý thông tin web</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Quản lý thông tin Web</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes-container">
+                        {% for category, message in messages %}
+                            <li class="flash-message {{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-card">
+                <form method="POST" action="{{ url_for('manage_shop_info') }}" enctype="multipart/form-data">
+                    <div class="form-section avatar-section">
+                        <label for="shop_avatar">Avatar Shop:</label>
+                        <div class="avatar-preview-wrapper">
+                            {% if shop_info.shop_avatar %}
+                                <img src="{{ MAIN_WEB_URL }}/static/shop_assets/{{ shop_info.shop_avatar }}" alt="Shop Avatar" class="shop-avatar-preview" id="avatarPreview">
+                            {% else %}
+                                <img src="{{ MAIN_WEB_URL }}/static/shop_assets/default_shop_avatar.png" alt="Default Avatar" class="shop-avatar-preview" id="avatarPreview">
+                            {% endif %}
+                        </div>
+                        <input type="file" id="shop_avatar" name="shop_avatar" accept="image/*" onchange="previewAvatar(event)">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="shop_name">Tên Shop:</label>
+                            <input type="text" id="shop_name" name="shop_name" value="{{ shop_info.shop_name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hotline">Hotline:</label>
+                            <input type="text" id="hotline" name="hotline" value="{{ shop_info.hotline }}" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="{{ shop_info.email }}" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="address">Địa chỉ:</label>
+                            <textarea id="address" name="address" rows="3" required>{{ shop_info.address }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facebook_link">Link Facebook:</label>
+                            <input type="url" id="facebook_link" name="facebook_link" value="{{ shop_info.facebook_link or '' }}"> {# Không required #}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zalo_link">Link Zalo:</label>
+                            <input type="url" id="zalo_link" name="zalo_link" value="{{ shop_info.zalo_link or '' }}"> {# Không required #}
+                        </div>
+
+                        <div class="form-group full-width"> {# Thêm trường website #}
+                            <label for="website_link">Link Website:</label>
+                            <input type="url" id="website_link" name="website_link" value="{{ shop_info.website_link or '' }}"> {# Không required #}
+                        </div>
+                    </div>
+
+                    <button type="submit">Cập nhật thông tin</button>
+                </form>
+            </div>
+            <p><a href="{{ url_for('admin_home') }}">Quay về trang chủ Admin</a></p>
+        </div>
+    </div>
+
+    <script>
+        function previewAvatar(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('avatarPreview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(20px)';
+                    msg.addEventListener('transitionend', () => msg.remove());
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

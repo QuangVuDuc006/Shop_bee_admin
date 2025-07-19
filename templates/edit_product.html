@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa sản phẩm - Admin Site</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="sidebar">
+            <h2>Shop Bee Admin</h2>
+            <img src="{{ url_for('static', filename='images/admin_logo.png') }}" alt="Admin Logo" class="admin-logo">
+            <div class="admin-user-info">
+                 {% if admin_user %}
+                    <p>Xin chào, <strong>{{ admin_user }}</strong></p>
+                    <a href="{{ url_for('logout_admin') }}" class="logout-btn">Đăng xuất</a>
+                {% endif %}
+            </div>
+            <ul>
+                <li><a href="{{ url_for('admin_home') }}">Trang chủ Admin</a></li>
+                <li><a href="{{ url_for('manage_products') }}">Quản lý sản phẩm</a></li>
+                <li><a href="{{ url_for('add_product') }}">Thêm sản phẩm mới</a></li>
+                <li><a href="{{ url_for('manage_shop_info') }}">Quản lý thông tin web</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Chỉnh sửa sản phẩm</h1>
+
+            <div class="form-card">
+                <form method="POST" action="{{ url_for('edit_product', product_id=product.id) }}">
+                    <label for="name">Tên sản phẩm:</label>
+                    <input type="text" id="name" name="name" value="{{ product.name }}" required>
+
+                    <label for="price">Giá:</label>
+                    <input type="number" id="price" name="price" value="{{ product.price }}" required min="0">
+
+                    <label for="category_slug">Danh mục:</label>
+                    <select id="category_slug" name="category_slug" required>
+                        {% for cat in categories %}
+                            <option value="{{ cat.slug }}" {% if cat.slug == product.category_slug %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <label for="description">Mô tả sản phẩm:</label>
+                    <textarea id="description" name="description" rows="5" required>{{ product.description }}</textarea>
+
+                    <button type="submit">Cập nhật sản phẩm</button>
+                </form>
+            </div>
+            <p><a href="{{ url_for('manage_products') }}">Quay về trang quản lý sản phẩm</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ "Đăng ký Admin" if register else "Đăng nhập Admin" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page-body">
+    <div class="admin-auth-container">
+        <h1>{{ "Đăng ký tài khoản Admin" if register else "Đăng nhập Admin" }}</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes-container">
+                    {% for category, message in messages %}
+                        <li class="flash-message {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập admin" required>
+
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu admin" required>
+
+            <button type="submit">{{ "Đăng ký" if register else "Đăng nhập" }}</button>
+        </form>
+
+        <p>
+            {% if register %}
+                Đã có tài khoản Admin? <a href="{{ url_for('login_admin') }}">Đăng nhập</a>
+            {% else %}
+                Chưa có tài khoản Admin? <a href="{{ url_for('register_admin') }}">Đăng ký</a>
+            {% endif %}
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(20px)';
+                    msg.addEventListener('transitionend', () => msg.remove());
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

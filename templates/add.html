@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Sản Phẩm Mới - Admin Site</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <div class="sidebar">
+            <h2>Shop Bee Admin</h2>
+            <img src="{{ url_for('static', filename='images/admin_logo.png') }}" alt="Admin Logo" class="admin-logo">
+            <div class="admin-user-info">
+                {% if admin_user %}
+                    <p>Xin chào, <strong>{{ admin_user }}</strong></p>
+                    <a href="{{ url_for('logout_admin') }}" class="logout-btn">Đăng xuất</a>
+                {% endif %}
+            </div>
+            <ul>
+                <li><a href="{{ url_for('admin_home') }}">Trang chủ Admin</a></li>
+                <li><a href="{{ url_for('manage_products') }}">Quản lý sản phẩm</a></li>
+                <li><a href="{{ url_for('add_product') }}">Thêm sản phẩm mới</a></li>
+                <li><a href="{{ url_for('manage_shop_info') }}">Quản lý thông tin web</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Thêm Sản Phẩm Mới (Có phiên bản)</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes-container">
+                        {% for category, message in messages %}
+                            <li class="flash-message {{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-card">
+                <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
+                    
+                    <div class="form-section">
+                        <h3>Thông tin chung</h3>
+                        <label for="name">Tên sản phẩm:</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="category_slug">Danh mục:</label>
+                        <select id="category_slug" name="category_slug" required>
+                            {% for cat in categories %}
+                                <option value="{{ cat.slug }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <label for="images">Ảnh sản phẩm (chọn nhiều ảnh):</label>
+                        <input type="file" id="images" name="images" accept="image/*" multiple>
+
+                        <label for="description">Mô tả sản phẩm:</label>
+                        <textarea id="description" name="description" rows="5" required></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Các phiên bản sản phẩm</h3>
+                        <div id="variants-container">
+                            </div>
+                        <button type="button" id="add-variant-btn" class="action-btn edit" style="margin-top: 15px;">＋ Thêm phiên bản</button>
+                    </div>
+
+                    <button type="submit" style="margin-top: 30px;">Thêm Sản Phẩm</button>
+                </form>
+            </div>
+            <p><a href="{{ url_for('manage_products') }}">Quay về trang quản lý</a></p>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const variantsContainer = document.getElementById('variants-container');
+        const addVariantBtn = document.getElementById('add-variant-btn');
+        let variantCount = 0;
+
+        function addVariant() {
+            variantCount++;
+            const variantHTML = `
+                <div class="variant-item" id="variant-${variantCount}">
+                    <hr>
+                    <h4>Phiên bản ${variantCount}</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="variant_color_${variantCount}">Màu sắc:</label>
+                            <input type="text" id="variant_color_${variantCount}" name="variant_color" placeholder="Vd: Xám Titan">
+                        </div>
+                        <div class="form-group">
+                            <label for="variant_storage_${variantCount}">Dung lượng:</label>
+                            <input type="text" id="variant_storage_${variantCount}" name="variant_storage" placeholder="Vd: 256GB">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="variant_price_${variantCount}">Giá (VNĐ):</label>
+                            <input type="number" id="variant_price_${variantCount}" name="variant_price" placeholder="Vd: 34990000" required>
+                        </div>
+                    </div>
+                    <button type="button" class="action-btn delete remove-variant-btn" data-variant-id="${variantCount}">Xóa phiên bản</button>
+                </div>
+            `;
+            variantsContainer.insertAdjacentHTML('beforeend', variantHTML);
+        }
+
+        // Thêm phiên bản đầu tiên khi tải trang
+        addVariant(); 
+
+        addVariantBtn.addEventListener('click', addVariant);
+
+        // Xử lý sự kiện xóa phiên bản
+        variantsContainer.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-variant-btn')) {
+                const variantId = e.target.dataset.variantId;
+                const variantToRemove = document.getElementById(`variant-${variantId}`);
+                if (variantToRemove) {
+                    variantToRemove.remove();
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>

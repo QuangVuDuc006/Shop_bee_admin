@@ -1,0 +1,746 @@
+/* ==================== GLOBAL & RESET ==================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body.auth-page-body {
+    background: linear-gradient(135deg, #ff9900, #ee4d2d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: #ee4d2d;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #d84315;
+}
+
+/* ==================== CONTAINER & LAYOUT ==================== */
+.admin-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px;
+}
+
+.sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, #ff9900, #f6c90e);
+    padding: 30px 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h2 {
+    font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admin-logo {
+    width: 80px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px;
+}
+
+.admin-user-info {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.admin-user-info p {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.admin-user-info strong {
+    font-weight: 700;
+}
+
+.admin-user-info .logout-btn,
+.admin-user-info .login-btn {
+    display: inline-block;
+    background-color: #ee4d2d;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.admin-user-info .logout-btn:hover,
+.admin-user-info .login-btn:hover {
+    background-color: #d84315;
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 12px 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #333;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+.main-content h1 {
+    font-size: 32px;
+    color: #ee4d2d;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 15px;
+}
+
+/* ==================== FORM STYLES ==================== */
+.form-card {
+    background-color: #fdfdfd;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 800px; /* Tăng max-width để form rộng hơn */
+    margin: 0 auto;
+}
+
+/* Form grid cho shop info */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột */
+    gap: 20px; /* Khoảng cách giữa các ô */
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Chiếm toàn bộ chiều rộng */
+}
+
+
+.form-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #555;
+    font-size: 15px;
+}
+
+.form-card input[type="text"],
+.form-card input[type="number"],
+.form-card input[type="email"], /* Thêm type email */
+.form-card input[type="url"],   /* Thêm type url */
+.form-card input[type="file"],
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card input[type="text"]:focus,
+.form-card input[type="number"]:focus,
+.form-card input[type="email"]:focus,
+.form-card input[type="url"]:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
+    outline: none;
+}
+
+.form-card button {
+    background-color: #28a745;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    margin-top: 30px; /* Khoảng cách trên nút submit */
+}
+
+.form-card button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* ==== AVATAR SHOP SECTION ==== */
+.avatar-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.avatar-preview-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Hình tròn cho avatar */
+    overflow: hidden;
+    margin: 0 auto 15px;
+    border: 3px solid #ff9900; /* Viền cam */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.shop-avatar-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung */
+}
+
+.avatar-section input[type="file"] {
+    width: auto; /* Để nút chọn file không chiếm hết hàng */
+    margin: 0 auto;
+    display: block;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ==================== FLASH MESSAGES ==================== */
+.flashes-container {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.flash-message {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.flash-message.success {
+    background-color: #e6ffed;
+    color: #1a7e3d;
+    border: 1px solid #b2ecb2;
+}
+
+.flash-message.error {
+    background-color: #ffe6e6;
+    color: #c90000;
+    border: 1px solid #ffb2b2;
+}
+
+.flash-message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.flash-message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* ==================== OTHER ELEMENTS ==================== */
+p {
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* ==== ADMIN AUTH PAGE SPECIFIC STYLES ==== */
+.admin-auth-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+}
+
+.admin-auth-container h1 {
+    font-size: 28px;
+    color: #ee4d2d;
+    margin-bottom: 25px;
+}
+
+.admin-auth-container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+
+.admin-auth-container input[type="text"],
+.admin-auth-container input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-auth-container input[type="text"]:focus,
+.admin-auth-container input[type="password"]:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
+    outline: none;
+}
+
+.admin-auth-container button {
+    background-color: #ff9900;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.admin-auth-container button:hover {
+    background-color: #e08500;
+    transform: translateY(-2px);
+}
+
+.admin-auth-container p {
+    font-size: 15px;
+    margin-top: 25px;
+    color: #666;
+}
+
+.admin-auth-container p a {
+    font-weight: 600;
+}
+
+/* ... (các style hiện có) ... */
+
+/* ==== THÔNG TIN HIỂN THỊ TRONG MY_SHOP_INFO.HTML ==== */
+.info-display {
+    background-color: #f8f8f8;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    font-size: 16px;
+    color: #333;
+    word-wrap: break-word; /* Đảm bảo nội dung dài không tràn */
+    min-height: 44px; /* Đảm bảo chiều cao nhất quán với input */
+    display: flex; /* Dùng flex để căn chỉnh nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.info-display a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.info-display a:hover {
+    color: #0056b3;
+}
+
+.edit-info-btn {
+    display: inline-block;
+    background-color: #007bff; /* Nút màu xanh cho chỉnh sửa */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    width: 100%; /* Nút full chiều rộng */
+}
+
+.edit-info-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* ======================================= */
+/* ==== STYLES FOR MY_SHOP_INFO PAGE ==== */
+/* ======================================= */
+
+.main-content h1 {
+    text-align: left;
+    border-bottom: none;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.info-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px 30px;
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.info-header .avatar-display {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f0f2f5;
+    margin-right: 20px;
+}
+
+.info-header .shop-title h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #212529;
+}
+
+.info-header .shop-title p {
+    margin: 5px 0 0;
+    font-size: 15px;
+    color: #6c757d;
+    text-align: left;
+}
+
+.info-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.info-value {
+    font-size: 16px;
+    color: #333;
+    background-color: #f8f9fa;
+    padding: 10px 12px;
+    border-radius: 6px;
+    word-wrap: break-word;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.info-value a {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.info-actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.edit-info-btn {
+    background-color: #ff9900;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.edit-info-btn:hover {
+    background-color: #e08500;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 153, 0, 0.3);
+}
+
+.back-link-bottom {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* ======================================= */
+/* ==== STYLES FOR PRODUCT LIST ON HOME ==== */
+/* ======================================= */
+
+.product-list-container {
+    background-color: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.product-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.product-list-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
+
+.add-product-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.add-product-btn:hover {
+    background-color: #218838;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.product-table th, .product-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.product-table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+.product-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.description-cell {
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #666;
+}
+
+.no-products {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.no-products p {
+    font-size: 18px;
+    color: #6c757d;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.no-products a {
+    font-weight: 600;
+    color: #007bff;
+}
+
+/* ==== STYLES FOR MANAGE PRODUCTS PAGE ==== */
+.actions-cell {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.action-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+.action-btn.edit {
+    background-color: #007bff; /* Blue */
+}
+.action-btn.delete {
+    background-color: #dc3545; /* Red */
+}
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+/* ======================================= */
+/* === STYLES FOR VARIANT FORM SECTION === */
+/* ======================================= */
+
+.form-section {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.variant-item {
+    padding: 15px;
+    border: 1px dashed #ced4da;
+    border-radius: 8px;
+    margin-top: 15px;
+    position: relative;
+}
+
+.variant-item h4 {
+    margin-top: 0;
+    color: #495057;
+}
+
+.variant-item .form-grid {
+    margin-top: 10px;
+}
+
+.remove-variant-btn {
+display: block; 
+width: fit-content; 
+margin-top: 10px; 
+padding: 8px 15px; 
+border: none;
+border-radius: 5px;
+color: white;
+background-color: #dc3545; 
+font-size: 14px;
+cursor: pointer;
+text-align: center; 
+}
+
+.remove-variant-btn:hover {
+opacity: 0.8;
+}
